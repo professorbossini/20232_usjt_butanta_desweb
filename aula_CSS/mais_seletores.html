@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    /* seletor descendente */
+    /* article p{
+      background-color: lightgray;
+    } */
+
+    /* body #principal article section p.coordenadores{
+      color: blue;
+    } */
+
+    article > p {
+      color: blue;
+    }
+
+    main > article, section > p.nova{
+
+    }
+
+    /* span#meuid{
+
+    } */
+  </style>
+</head>
+<body>
+
+  <article>
+    <p>Sou filho direto</p>
+    <div>
+      <p>Não sou filho direto</p>
+    </div>
+  </article>
+
+
+
+  <!-- main#principal>article>section>p.coordenadores -->
+  <div>
+    <main id="principal">
+      <article>
+        <section>
+          <div>
+          </div>
+        </section>
+        <p class="coordenadores">Conheça nossos coordenadores</p>
+      </article>
+    </main>
+  </div>
+
+  <article>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima, libero?</p>
+  </article>
+
+  <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet, mollitia.</p>
+
+  <article>
+    <div>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id, commodi.</p>
+    </div>
+  </article>
+
+</body>
+</html>
