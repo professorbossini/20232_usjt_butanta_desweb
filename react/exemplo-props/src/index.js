@@ -2,8 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import Pedido from './Pedido'
+import Cartao from './Cartao'
+import Feedback from './Feedback'
 
 const App = () => {
+  const textoOK = "Já chegou"
+  const textoNOK = "Não chegou"
+  const funcaoOK = () => alert("Agradecemos a confirmação")
+  const funcaoNOK = () => alert("Verificaremos o ocorrido")
+  const componenteFeedback = <Feedback textoOK={textoOK} textoNOK={textoNOK} funcaoOK={funcaoOK} funcaoNOK={funcaoNOK}/>
   return <div className="container border rounded mt-2">
       {/*linha para o título da página  */}
       <div className="row border-bottom m-2">
@@ -13,55 +21,38 @@ const App = () => {
       {/* linha para o primeiro pedido */}
       <div className="row">
         <div className="col-sm-8 col-md-6 m-2">
-          <div className="card">
-            {/* cabeçalho do cartão */}
-            <div className="card-header text-muted">22/04/2023</div>
-            <div className="card-body d-flex">
-              <div className="d-flex align-items-center">
-                <i className="fa-solid fa-hdd fa-2x"></i>
-              </div>
-              <div className="flex-grow-1 ms-2 border">
-                <h4 className="text-center mt-1">SSD</h4>
-                <p className="text-center">SSD Kingston A400</p>
-              </div>
-            </div>
-          </div>
+          <Cartao cabecalho="22/04/2023">
+            <Pedido 
+              icone="fa-solid fa-hdd fa-2x"
+              titulo="SSD"
+              descricao="SSD Kingston A400"/>
+            {componenteFeedback}
+          </Cartao>
+
         </div>
       </div>
 
       <div className="row">
         <div className="col-sm-8 col-md-6 m-2">
-          <div className="card">
-            {/* cabeçalho do cartão */}
-            <div className="card-header text-muted">20/05/2023</div>
-            <div className="card-body d-flex">
-              <div className="d-flex align-items-center">
-                <i className="fa-solid fa-book fa-2x"></i>
-              </div>
-              <div className="flex-grow-1 ms-2 border">
-                <h4 className="text-center mt-1">Livro</h4>
-                <p className="text-center">Concrete Mathematics - Donald Knuth</p>
-              </div>
-            </div>
-          </div>
+          <Cartao cabecalho="15/07/2023">
+            <Pedido 
+              icone="fa-solid fa-book fa-2x"
+              titulo="Livro"
+              descricao="Concrete Mathematics - Donald Knuth"/>
+            {componenteFeedback}
+          </Cartao>
         </div>
       </div>
 
       <div className="row">
         <div className="col-sm-8 col-md-6 m-2">
-          <div className="card">
-            {/* cabeçalho do cartão */}
-            <div className="card-header text-muted">20/05/2023</div>
-            <div className="card-body d-flex">
-              <div className="d-flex align-items-center">
-                <i className="fa-solid fa-laptop fa-2x"></i>
-              </div>
-              <div className="flex-grow-1 ms-2 border">
-                <h4 className="text-center mt-1">Notebook</h4>
-                <p className="text-center">Notebok Dell i5 8Gb</p>
-              </div>
-            </div>
-          </div>
+          <Cartao cabecalho="22/08/2023">
+            <Pedido 
+              icone="fa-solid fa-laptop fa-2x"
+              titulo="Notebook"
+              descricao="Notebook Dell 8Gb i5"/>
+            {componenteFeedback}
+          </Cartao>
         </div>
       </div>
   </div>
