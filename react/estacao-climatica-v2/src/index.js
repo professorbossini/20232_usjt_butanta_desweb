@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import React from "react"; //imr
 import ReactDOM from "react-dom"; //imrd
+import { EstacaoClimatica } from "./EstacaoClimatica";
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +13,9 @@ class App extends React.Component {
       estacao: null,
       data: null,
       icone: null,
+      mensagemDeErro: null,
     };
+    console.log("construtor");
   }
 
   obterEstacao = (data, latitude) => {
@@ -42,25 +45,44 @@ class App extends React.Component {
 
   obterLocalizacao = () => {
     //1. Obter a localização com a API de geolocalização
-    window.navigator.geolocation.getCurrentPosition((posicao) => {
-      //2. Extrair a data atual do sistema
-      let data = new Date();
-      //3. Obter o nome da estação usando a latitude e a data atual
-      let estacao = this.obterEstacao(data, posicao.coords.latitude);
-      //4. Obter o nome do icone usando o nome da estação para indexar o mapa de icones
-      let icone = this.icones[estacao];
-      //5. Atualizar o estado da aplicação, o que faz com que a tela seja atualizada
-      this.setState({
-        latitude: posicao.coords.latitude,
-        longitude: posicao.coords.longitude,
-        estacao: estacao,
-        data: data.toLocaleTimeString(),
-        icone: icone,
-      });
-    });
+    window.navigator.geolocation.getCurrentPosition(
+      (posicao) => {
+        //2. Extrair a data atual do sistema
+        let data = new Date();
+        //3. Obter o nome da estação usando a latitude e a data atual
+        let estacao = this.obterEstacao(data, posicao.coords.latitude);
+        //4. Obter o nome do icone usando o nome da estação para indexar o mapa de icones
+        let icone = this.icones[estacao];
+        //5. Atualizar o estado da aplicação, o que faz com que a tela seja atualizada
+        this.setState({
+          latitude: posicao.coords.latitude,
+          longitude: posicao.coords.longitude,
+          estacao: estacao,
+          data: data.toLocaleTimeString(),
+          icone: icone,
+        });
+      },
+      (erro) => {
+        console.log(erro);
+        this.setState({ mensagemDeErro: `Tente novamente mais tarde` });
+      }
+    );
   };
 
+  componentDidMount() {
+    this.obterLocalizacao();
+  }
+
+  componentDidUpdate() {
+    console.log("componentDidUpdate");
+  }
+
+  componentWillUnmount() {
+    console.log("componentWillUnmount");
+  }
+
   render() {
+    console.log("render");
     return (
       // responsividade, margem acima
       <div className="container mt-2">
@@ -69,30 +91,15 @@ class App extends React.Component {
           {/* oito colunas das doze disponíveis serão usadas para telas médias em diante */}
           <div className="col-md-8">
             {/* um cartão Bootstrap */}
-            <div className="card">
-              {/* o corpo do cartão */}
-              <div className="card-body">
-                {/* centraliza verticalmente, margem abaixo */}
-                <div
-                  className="d-flex align-items-center border rounded mb-2"
-                  style={{ height: "6rem" }}
-                >
-                  {/* ícone obtido do estado do componente */}
-                  <i className={`fas fa-5x ${this.state.icone}`}></i>
-                  {/* largura 75%, margem no à esquerda (start), fs aumenta a fonte */}
-                  <p className=" w-75 ms-3 text-center fs-1">
-                    {this.state.estacao}
-                  </p>
-                </div>
-                {/* botão azul (outline, 100% de largura e margem acima) */}
-                <button
-                  onClick={this.obterLocalizacao}
-                  className="btn btn-outline-primary w-100 mt-2"
-                >
-                  Qual a minha estação?
-                </button>
-              </div>
-            </div>
+            <EstacaoClimatica
+              icone={this.state.icone}
+              estacao={this.state.estacao}
+              latitude={this.state.latitude}
+              longitude={this.state.longitude}
+              data={this.state.data}
+              mensagemDeErro={this.state.mensagemDeErro}
+              obterLocalizacao={this.obterLocalizacao}
+            />
           </div>
         </div>
       </div>
