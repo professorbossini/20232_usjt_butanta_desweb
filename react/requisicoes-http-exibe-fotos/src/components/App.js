@@ -1,7 +1,10 @@
 import React from 'react'
 import Busca from './Busca'
 import env from 'react-dotenv'
-import { createClient } from 'pexels'
+// import { createClient } from 'pexels'
+import pexelsClient from '../utils/pexelsClient'
+import ListaImagens from './ListaImagens'
+import PexelsLogo from './PexelsLogo'
 export default class App extends React.Component {
   pexelsClient = null
 
@@ -10,18 +13,26 @@ export default class App extends React.Component {
   }
   
   onBuscaRealizada = (termo) => {
-    this.pexelsClient.photos.search({
-      query: termo
+    // this.pexelsClient.photos.search({
+    //   query: termo
+    // })
+    // .then(pics => this.setState({pics: pics.photos}))
+    pexelsClient.get('/search', {
+      params: {query: termo}
     })
-    .then(pics => this.setState({pics: pics.photos}))
+    .then(result => this.setState({pics: result.data.photos}))
   }
 
   componentDidMount(){
-    this.pexelsClient = createClient(env.PEXELS_KEY)
+    // this.pexelsClient = createClient(env.PEXELS_KEY)
+    console.log(env.PEXELS_KEY)
   }
   render(){
     return (
       <div className="grid justify-content-center m-auto w-9 border-round border-1 border-400">
+        <div className="col-12">
+          <PexelsLogo />
+        </div>
         <div className='col-12'>
           <h1>Exibir uma lista de...</h1>
         </div>
@@ -29,13 +40,7 @@ export default class App extends React.Component {
           <Busca onBuscaRealizada={this.onBuscaRealizada}/>
         </div>
         <div className="col-8">
-          {
-            this.state.pics.map((pic, key) => (
-              <div key={key}>
-                <img src={pic.src.small} alt={pic.alt} />
-              </div>
-            ))
-          }
+          <ListaImagens pics={this.state.pics}/>
         </div>
       </div>
   
